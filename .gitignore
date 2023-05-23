@@ -1,0 +1,30 @@
+# VSCode
+.vscode
+
+# Docker data
+data
+data-test
+
+# web demo
+webdemo
+
+# trash that should not yet be trashed
+archive
+_archive
+
+# black hole
+node_modules
+**/node_modules
+
+# GoLand
+.idea
+
+main
+
+docs
+
+**/.DS_Store
+
+bin
+
+synonym-api

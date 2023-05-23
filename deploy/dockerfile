@@ -1,0 +1,36 @@
+# syntax=docker/dockerfile:1
+
+## STEP 1 - BUILD
+# Start from golang base image
+FROM golang:alpine as builder
+
+# Set the current working directory inside the container
+WORKDIR /app
+
+# Copy go modules
+COPY go.* ./
+
+# Run go mod
+RUN go mod download
+
+# Copy code sources
+COPY ./cmd ./cmd
+COPY ./internal ./internal
+
+# Build Go
+RUN cd cmd && go build -o app
+
+## STEP 2 - DEPLOY
+# Start a new stage from scratch
+FROM alpine:latest
+
+WORKDIR /
+
+# Copy the Pre-built binary file from the previous stage.
+COPY --from=builder /app /opt/app
+
+# Set the API port to expose
+EXPOSE 8080
+
+#Command to run the executable
+ENTRYPOINT ["/opt/app/cmd/app"]
